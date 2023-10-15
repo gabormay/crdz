@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chordz</title>
+  <!-- <link rel="stylesheet" href="styles.css"> -->
+</head>
+
+<body>
+  <h1>Akkordok</h1>
+  <div>
+    <label for="selTonic">Alaphang:</label>
+    <select id="selTonic">
+        <option value="C" >C</option>
+        <option value="Cb">Cb</option>
+        <option value="C#">C#</option>
+        <option value="D" >D</option>
+        <option value="Db">Db</option>
+        <option value="D#">D#</option>
+        <option value="E" >E</option>
+        <option value="Eb">Eb</option>
+        <option value="E#">E#</option>
+        <option value="F" >F</option>
+        <option value="Fb">Fb</option>
+        <option value="F#">F#</option>
+        <option value="G" >G</option>
+        <option value="Gb">Gb</option>
+        <option value="G#">G#</option>
+        <option value="A" >A</option>
+        <option value="Ab">Ab</option>
+        <option value="A#">A#</option>
+        <option value="B" >H</option>
+        <option value="Bb">B</option>
+        <option value="B#">H#</option>
+    </select>
+    <p>
+        <button type="button" onclick="showResult()">Mutasd</button>
+    </p>
+    <hr/>
+    <div>
+        <h2>Hármashangzat</h2>
+        <label for="selType3">Típus:</label>
+        <select id="selType3">
+            <option value="maj">dúr</option>
+            <option value="m">moll</option>
+            <option value="dim">szűkített</option>
+            <option value="aug">bővített</option>
+        </select>
+        <p>Akkord: <b id="spCrd3"></b></p>
+        <p>Hangok: <b id="spNotes3"></b></p>
+    </div>
+    <hr/>
+    <div>
+        <h2>Négyeshangzat</h2>
+        <label for="selType4">Típus</label>
+        <select id="selType4">
+            <option value="7">Dúr7 - domináns szeptim</option>
+            <option value="m7">Moll7</option>
+            <option value="maj7">Dúr major 7</option>
+            <option value="m(maj7)">Moll major 7</option>
+            <option value="6">Dúr 6</option>
+            <option value="m6">Moll 6</option>
+            <option value="dim7">szűkített szeptim</option>
+            <option value="m7/5b">félszűkített szeptim</option>
+            <option value="7/5#">bővített szeptim</option>
+        </select>
+        <p>Akkord: <b id="spCrd4"></b></p>
+        <p>Hangok: <b id="spNotes4"></b></p>
+    </div>
+  </div>
+  <hr/>
+  <script src="crdz.js"></script> 
+  <script>
+    function showResult() {
+        var tonic = document.getElementById("selTonic").value;
+        var type3 = document.getElementById("selType3").value;
+        var type4 = document.getElementById("selType4").value;
+        // 
+        var scl3 = sclMaj3;
+        var c3lbl = type3 == "maj" ? "" : type3;
+        if (type3=="m")   scl3 = sclMin3;
+        if (type3=="dim") scl3 = sclDim3;
+        if (type3=="aug") scl3 = sclAug3;
+        document.getElementById('spCrd3').innerHTML=tonic + c3lbl;
+        document.getElementById('spNotes3').innerHTML=genScaleNotes(tonic, scl3, thirdnotes);
+        // 
+        var scl4 = scl4Dom7;
+        var c4lbl = type4;
+        var notes4 = thirdnotes;
+        if (type4 == "m7") scl4 = scl4Min7;
+        if (type4 == "maj7") scl4 = scl4Maj7;
+        if (type4 == "m(maj7)") scl4 = scl4MMaj7;
+
+        if (type4 == "dim7") scl4 = scl4Dim7;
+        if (type4 == "m7/5b") scl4 = scl4m75b;
+        if (type4 == "7/5#") scl4 = scl475x;
+
+        if (type4 == "6") scl4 = scl4Maj6;
+        if (type4 == "m6") scl4 = scl4Min6;
+        // need to handle specially for 6th chords, as the thirds do not work anymore
+        if (type4 == "6" || type4 == "m6") notes4 = notes;
+
+        document.getElementById('spCrd4').innerHTML=tonic + c4lbl;
+        document.getElementById('spNotes4').innerHTML=genScaleNotes(tonic, scl4, notes4);
+    }
+  </script>
+</body>
+</html>
