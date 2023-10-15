@@ -14,6 +14,8 @@ const sclMaj3 = [0, 4, 7];
 const sclMin3 = [0, 3, 7];
 const sclDim3 = [0, 3, 6];
 const sclAug3 = [0, 4, 8];
+const scl3Sus4 = [0, -1, -1, 5, 7];
+const scl3Sus2 = [0, 2, -1, -1, 7];
 
 const scl4Dom7  = [0, 4, 7, 10];
 const scl4Min7  = [0, 3, 7, 10];
@@ -24,16 +26,22 @@ const scl4Dim7 = [0, 3, 6, 9];
 const scl4m75b = [0, 3, 6, 10];
 const scl475x =  [0, 4, 8, 10];
 
+// ok, this is kind of an afterthought, needed for 6th chords
+// negative values will be skipped when generating
 const scl4Maj6 = [0, -1, 4, -1, 7, 9];
 const scl4Min6 = [0, -1, 3, -1, 7, 9];
 
+// 9/11/13 chords, these work in addition to any scl4 chords
+const sclCrd13 = [-1, -1, -1, -1, 14, 17, 21];
+
 // Given a tonic note and a scale specification,
 // generates an array of notes representing the scale
-// Every base note has to appear once and only once.
 function genScaleNotes(tonic, scl, notes)
 {
     // start with the tonic        
-    result = [tonic];
+    result = [];
+    // skip the tonic if negative, assume zero otherwise
+    if (scl[0]>=0) result.push(tonic);
     itonic = note2i(notes, tonic);
     acc = naccidental(tonic);
     for (let i = 1; i < scl.length; i++) {
