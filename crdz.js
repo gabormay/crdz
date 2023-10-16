@@ -56,9 +56,25 @@ const allCrd4 = [
     {id: "7/5#",    name:"7/5#",    scl: scl475x,   notes: thirdnotes},
 ];
 
-function genCrd(allCrd, tonic, id) {
+function genCrdById(allCrd, tonic, id) {
     var crd = allCrd.find((elem) => { return id==elem.id; });
+    return genCrd(crd, tonic);
+}
+function genCrd(crd, tonic) {
     return {name: tonic+crd.name, notes: genScaleNotes(tonic, crd.scl, crd.notes)};
+}
+
+function notesContain(fullset, subset) {
+    return subset.every((note) => {
+        return fullset.some((fn) => {
+            //console.log(note, fn, noteDist(note, fn));
+            return noteMatch(note, fn);
+        });
+    });
+}
+
+function noteMatch(n1, n2) {
+    return noteDist(n1, n2) == 0;
 }
 
 // Given a tonic note and a scale specification,

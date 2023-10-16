@@ -100,6 +100,8 @@
       <p>Akkord: <b id="spCrd4"></b></p>
       <p>Hangok: <b id="spNotes4"></b></p>
       <p>Díszítők (9,11,13): <b id="spNotes13"></b></p>
+      <p>Bennefoglalt hármashangzatok (díszítők nélkül): <span id="crd3Matches"></span></p>
+      <p>Bennefoglalt hármashangzatok (díszítőkkel): <span id="crd3MatchesExt"></span></p>
     </div>
   </div>
   <hr/>
@@ -109,7 +111,7 @@
     function showResult3() {
       var tonic = document.getElementById("selTonic3").value;
       var type3 = document.getElementById("selType3").value;
-      var res = genCrd(allCrd3, tonic, type3);
+      var res = genCrdById(allCrd3, tonic, type3);
       document.getElementById('spCrd3').innerHTML=res.name;
       document.getElementById('spNotes3').innerHTML=res.notes;
     }
@@ -117,10 +119,37 @@
     function showResult4() {
       var tonic = document.getElementById("selTonic4").value;
       var type4 = document.getElementById("selType4").value;
-      var res = genCrd(allCrd4, tonic, type4);
-      document.getElementById('spCrd4').innerHTML=res.name;
-      document.getElementById('spNotes4').innerHTML=res.notes;
-      document.getElementById('spNotes13').innerHTML=genScaleNotes(tonic, sclCrd13, thirdnotes);
+      var res4 = genCrdById(allCrd4, tonic, type4);
+      var addNotes = genScaleNotes(tonic, sclCrd13, thirdnotes);
+      document.getElementById('spCrd4').innerHTML=res4.name;
+      document.getElementById('spNotes4').innerHTML=res4.notes;
+      document.getElementById('spNotes13').innerHTML=addNotes;
+      // check for included triads
+      matchesHTML = "";
+      allCrd3.forEach(crd => {
+        res4.notes.forEach(n => {
+          res = genCrd(crd, n);
+          //console.log("Checking", res.notes, fullnotes);
+          if (notesContain(res4.notes, res.notes)) {
+            matchesHTML += "<b>" + res.name + "</b> (" + res.notes + ") ";
+          }
+        });
+      });
+      document.getElementById('crd3Matches').innerHTML = matchesHTML;
+      
+      // now check with extensions included
+      matchesHTMLExt = "";
+      var fullnotes = res4.notes.concat(addNotes); 
+      allCrd3.forEach(crd => {
+        fullnotes.forEach(n => {
+          res = genCrd(crd, n);
+          //console.log("Checking", res.notes, fullnotes);
+          if (notesContain(fullnotes, res.notes)) {
+            matchesHTML += "<b>" + res.name + "</b> (" + res.notes + ") ";
+          }
+        });
+      });
+      document.getElementById('crd3MatchesExt').innerHTML = matchesHTML;
     }
   </script>
 </body>
