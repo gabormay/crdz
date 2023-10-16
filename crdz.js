@@ -7,13 +7,14 @@ const notes = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
 const sclMajor = [0, 2, 4, 5, 7, 9, 11];
 const sclMinor = [0, 2, 3, 5, 7, 8, 10];
 
-// acschually, chords with third steps can be treated just as above
+// acschually, chords with third steps can be treated just as above, using a note list with 3rd steps
 const thirdnotes = ['C', 'E', 'G', 'B', 'D', 'F', 'A'];
 
 const sclMaj3 = [0, 4, 7];
 const sclMin3 = [0, 3, 7];
 const sclDim3 = [0, 3, 6];
 const sclAug3 = [0, 4, 8];
+// see below at the 6th chords
 const scl3Sus4 = [0, -1, -1, 5, 7];
 const scl3Sus2 = [0, 2, -1, -1, 7];
 
@@ -33,6 +34,32 @@ const scl4Min6 = [0, -1, 3, -1, 7, 9];
 
 // 9/11/13 chords, these work in addition to any scl4 chords
 const sclCrd13 = [-1, -1, -1, -1, 14, 17, 21];
+
+const allCrd3 = [
+    {id: "maj",  name:"",     scl: sclMaj3, notes: thirdnotes},
+    {id: "min",  name:"m",    scl: sclMin3, notes: thirdnotes},
+    {id: "dim",  name:"dim",  scl: sclDim3, notes: thirdnotes},
+    {id: "aug",  name:"aug",  scl: sclAug3, notes: thirdnotes},
+    {id: "sus4", name:"sus4", scl: scl3Sus4, notes: notes},
+    {id: "sus2", name:"sus2", scl: scl3Sus2, notes: notes},
+];
+
+const allCrd4 = [
+    {id: "7",       name:"7",       scl: scl4Dom7,  notes: thirdnotes},
+    {id: "m7",      name:"m7",      scl: scl4Min7,  notes: thirdnotes},
+    {id: "maj7",    name:"maj7",    scl: scl4Maj7,  notes: thirdnotes},
+    {id: "m(maj7)", name:"m(maj7)", scl: scl4MMaj7, notes: thirdnotes},
+    {id: "6",       name:"6",       scl: scl4Maj6,  notes: notes},
+    {id: "m6",      name:"m6",      scl: scl4Min6,  notes: notes},
+    {id: "dim7",    name:"dim7",    scl: scl4Dim7,  notes: thirdnotes},
+    {id: "m7/5b",   name:"m7/5b",   scl: scl4m75b,  notes: thirdnotes},
+    {id: "7/5#",    name:"7/5#",    scl: scl475x,   notes: thirdnotes},
+];
+
+function genCrd(allCrd, tonic, id) {
+    var crd = allCrd.find((elem) => { return id==elem.id; });
+    return {name: tonic+crd.name, notes: genScaleNotes(tonic, crd.scl, crd.notes)};
+}
 
 // Given a tonic note and a scale specification,
 // generates an array of notes representing the scale
